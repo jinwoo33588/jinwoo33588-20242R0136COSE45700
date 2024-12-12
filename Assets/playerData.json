@@ -1,0 +1,7 @@
+{
+    "name": "name",
+    "age": 0,
+    "level": 100,
+    "isDead": true,
+    "items": []
+}
