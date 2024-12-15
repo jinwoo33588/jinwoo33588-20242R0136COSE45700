@@ -15,7 +15,11 @@ public class PlayerStats : ScriptableObject
     public int Level;
     public int Exp;
 
-     public event Action OnStatsChanged;
+     public event System.Action OnStatsChanged;
+     public void TriggerStatsChanged()
+    {
+        OnStatsChanged?.Invoke(); // 이벤트 호출
+    }
 
     //public int Gold;
     public void InitializePlayerStats(int life, float stamina, float staminaRecoveryRate, float speed, int level, int exp)
@@ -27,6 +31,6 @@ public class PlayerStats : ScriptableObject
         Level = level;
         Exp = exp;
 
-        OnStatsChanged?.Invoke();
+        //OnStatsChanged?.Invoke();
     }
 }

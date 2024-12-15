@@ -32,9 +32,13 @@ public class PlayerController : UnitBase
     {
         //base.Update();
         HandleMovement();
-        //RecoverStamina();
+        RecoverStamina();
         //AddSpeed(1);
-        UseStamina();
+        //UseStamina();
+        if (Input.GetKeyDown(KeyCode.R))  // R 키를 눌렀을 때 한 번만 실행
+        {
+            UseStamina();
+        }
         //Debug.Log($"PlayerController - Stamina: {playerStats.Stamina}");
     }
     private void HandleMovement()
@@ -79,11 +83,11 @@ public class PlayerController : UnitBase
     }
     private void UseStamina()
     {
-        if(Input.GetKey(KeyCode.R))
-        {
-            stamina -= 10f;
-            Debug.Log("PlayerController - Stamina used");
-        }
+        
+        stamina -= 10f;
+        Debug.Log("PlayerController - Stamina used");
+        GameDataManager.Instance.UpdatePlayerStats(0,-10f,0f,0f,0,0);
+
     }
     public void SaveStats()
     {

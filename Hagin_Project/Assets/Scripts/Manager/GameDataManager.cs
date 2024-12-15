@@ -61,7 +61,20 @@ public class GameDataManager : MonoBehaviour
         File.WriteAllText(filePath, jsonData);
         Debug.Log("로비 데이터 저장: " + filePath);
     }
+     public void UpdatePlayerStats(int lifeChange, float staminaChange,float staminaRecoveryRateChange, float speedChange, int levelChange, int expChange)
+    {
+        // 실제 PlayerStats 값 변경
+        playerStats.Life += lifeChange;
+        playerStats.Stamina += staminaChange;
+        playerStats.Speed += speedChange;
+        playerStats.Level += levelChange;
+        playerStats.Exp += expChange;
+
+        // 값 변경 후, UI 갱신
+        playerStats.TriggerStatsChanged();
+    }
 }
+
 // JSON 데이터 구조
 [System.Serializable]
 public class PlayerStatsData
