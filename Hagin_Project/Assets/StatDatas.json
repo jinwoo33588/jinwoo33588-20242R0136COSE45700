@@ -1,0 +1,10 @@
+{
+    "Stats": [
+        {
+            "Life": 3,
+            "Stamina": 100.0,
+            "StaminaRecoveryRate": 5.0,
+            "Speed": 10.0
+        }
+    ]
+}
