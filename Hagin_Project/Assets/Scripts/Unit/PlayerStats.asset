@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e9c8eec0fdf4030a275faeeb2a514d, type: 3}
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
-  Life: 0
-  Stamina: 0
-  StaminaRecoveryRate: 0
-  Speed: 0
+  Life: 3
+  Stamina: -60
+  StaminaRecoveryRate: 10
+  Speed: 10
   Level: 0
-  Exp: 0
+  Exp: 100
