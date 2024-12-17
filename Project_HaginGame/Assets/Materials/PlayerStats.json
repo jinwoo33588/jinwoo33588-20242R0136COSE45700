@@ -1,0 +1,8 @@
+{
+    "stamina": 100,
+    "maxStamina": 100,
+    "staminaRecoveryRate": 5,
+    "speed": 3,
+    "runSpeed": 6
+  }
+  

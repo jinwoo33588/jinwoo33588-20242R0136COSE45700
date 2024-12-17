@@ -1,0 +1,10 @@
+{
+    "Stamina": 100,
+    "StaminaRecoveryRate": 5,
+    "StaminaUseRate": 2,
+    "WalkSpeed": 10,
+    "RunSpeed": 15,
+    "Level": 1,
+    "Exp": 0,
+    "Gold": 0
+}
