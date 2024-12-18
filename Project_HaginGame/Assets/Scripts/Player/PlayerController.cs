@@ -1,5 +1,7 @@
 using UnityEngine;
 
+
+
 public class PlayerController : UnitBase
 {
     [Header("Player Settings")]
@@ -19,11 +21,17 @@ public class PlayerController : UnitBase
         stamina = stats.stamina;
         maxStamina = stats.maxStamina;
         staminaRecoveryRate = stats.staminaRecoveryRate;
-        walkSpeed = stats.speed;
-        runSpeed = stats.runSpeed;
+        //walkSpeed = stats.speed;
+        //runSpeed = stats.runSpeed;
         //currentSpeed = walkSpeed;
         //controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        //animator = GetComponentInChildren<Animator>();
+        // Animator 컴포넌트를 자동으로 가져오기
+        //animator = GetComponent<Animator>();
+        if (animator == null)
+        {
+            Debug.LogError("Animator 컴포넌트를 찾을 수 없습니다. Player 오브젝트에 Animator를 추가하세요.");
+        }
 
         //mainCamera = Camera.main;
         
@@ -113,4 +121,23 @@ public class PlayerController : UnitBase
         isDashing = false;
         stamina -= 20; // Dash 사용 시 스태미나 소모
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Die();
+        }
+    }
+    private void Die()
+    {
+        Debug.Log("Player has died!");
+
+        // 게임 종료 처리 (예: 메인 메뉴로 이동)
+        GameManager.Instance.GameOver();
+    }
+
+    
+
+
 }

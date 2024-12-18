@@ -35,6 +35,7 @@ public class UnitBase : MonoBehaviour
 
     protected virtual void Start()
     {
+        animator = GetComponentInChildren<Animator>();
         // 유닛 기본 초기화 로직 (필요시 추가)
         currentSpeed = walkSpeed;
         // 스태미나 슬라이더 생성 및 설정
@@ -45,6 +46,7 @@ public class UnitBase : MonoBehaviour
             staminaSlider.maxValue = maxStamina;
             UpdateStaminaSlider();
         }
+
     }
 
 
@@ -89,9 +91,13 @@ public class UnitBase : MonoBehaviour
     // 스태미나 회복/감소
     protected virtual void HandleStamina()
     {
-        if (currentState == UnitState.Idle && stamina < maxStamina)
+        if (currentState == UnitState.Idle  && stamina < maxStamina)
         {
             stamina += staminaRecoveryRate * Time.deltaTime;
+        }
+        else if(currentState == UnitState.Walk  && stamina < maxStamina)
+        {
+            stamina += staminaRecoveryRate * Time.deltaTime * 3;
         }
     }
 
@@ -108,11 +114,18 @@ public class UnitBase : MonoBehaviour
     // 애니메이션 상태 업데이트
     protected virtual void UpdateAnimation()
     {
-        if (animator == null) return;
-
+        if (animator == null)
+        {
+            if (animator == null) 
+    {
+            Debug.LogWarning("Animator가 연결되지 않았습니다.");
+            return;
+    }
+        } 
+        Debug.Log($"Current State: {currentState}");
         animator.SetBool("isIdle", currentState == UnitState.Idle);
-        animator.SetBool("isWalking", currentState == UnitState.Walk);
-        animator.SetBool("isRunning", currentState == UnitState.Run);
+        animator.SetBool("isWalk", currentState == UnitState.Walk);
+        animator.SetBool("isRun", currentState == UnitState.Run);
     }
     private void UpdateStaminaSlider()
     {

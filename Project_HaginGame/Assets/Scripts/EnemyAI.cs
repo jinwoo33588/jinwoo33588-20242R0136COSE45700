@@ -20,11 +20,17 @@ public class EnemyAI : MonoBehaviour
     private float currentStamina;
     private bool isTired = false;
 
+    protected Animator animator;
+    private bool isMove = false;
+
 
     private Transform otherEnemy;           // 다른 적의 Transform
 
     void Start()
     {
+        animator = GetComponentInChildren<Animator>();
+        isMove = true;
+        animator.SetBool("isMove", isMove);
         // 다른 적 찾기
         EnemyAI[] enemies = FindObjectsOfType<EnemyAI>();
         foreach (var enemy in enemies)
@@ -59,7 +65,7 @@ public class EnemyAI : MonoBehaviour
         // 적 1과 적 2 구분 (이름 기반 또는 태그 활용)
         if (gameObject.name == "Enemy1")
         {
-            ChasePlayerDirectly();
+            ChasePlayerWithPrediction();
         }
         else if (gameObject.name == "Enemy2")
         {
@@ -75,8 +81,11 @@ public class EnemyAI : MonoBehaviour
     {
         Vector3 direction = (player.position - transform.position).normalized;
         transform.position += direction * speed * Time.deltaTime;
+        // 회전 업데이트
+        RotateTowards(direction);
 
         MaintainSeparation(); // 적 간 거리 유지
+        
     }
 
     // 적 2: 플레이어의 이동 방향 예측 및 추적
@@ -85,12 +94,15 @@ public class EnemyAI : MonoBehaviour
         // 플레이어의 예측 위치 계산
         Vector3 futurePosition = player.position + player.forward * predictionDistance;
         Vector3 direction = (futurePosition - transform.position).normalized;
+        // 회전 업데이트
+        RotateTowards(direction);
 
         // 적 간 거리 유지
         MaintainSeparation();
 
         // 이동
         transform.position += direction * speed * Time.deltaTime;
+        
     }
 
     // 적 간 최소 거리 유지
@@ -104,6 +116,15 @@ public class EnemyAI : MonoBehaviour
             // 적에게서 멀어지는 방향으로 이동
             Vector3 separationDirection = (transform.position - otherEnemy.position).normalized;
             transform.position += separationDirection * (speed * 0.5f) * Time.deltaTime;
+        }
+    }
+    // 이동 방향으로 회전
+    private void RotateTowards(Vector3 direction)
+    {
+        if (direction.sqrMagnitude > 0.01f) // 방향 벡터가 유효한지 확인
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // 부드럽게 회전
         }
     }
 

@@ -369,6 +369,7 @@
 "Assets/QuarterView 3D Action BE5/ReadMe/Scripts/ReadmeBE5.cs"
 "Assets/Scripts/EnemyAI.cs"
 "Assets/Scripts/GamePauseResume.cs"
+"Assets/Scripts/MainMenu.cs"
 "Assets/Scripts/Manager/GameDataManager.cs"
 "Assets/Scripts/Manager/GameManager.cs"
 "Assets/Scripts/Manager/InGameUIManager.cs"
