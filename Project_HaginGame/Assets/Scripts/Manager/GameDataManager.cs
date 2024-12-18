@@ -13,6 +13,7 @@ public class UnitStats
     public float runSpeed;
 }
 
+
 public class GameDataManager : MonoBehaviour
 {
     public static GameDataManager Instance;
@@ -24,6 +25,9 @@ public class GameDataManager : MonoBehaviour
     public UnitStats enemyStats { get; private set; }
     private UnitStats initialPlayerStats;
     private UnitStats initialEnemyStats;
+
+    private float mCurrentGameTime = 0.0f;
+
 
     private void Awake()
     {
@@ -40,6 +44,11 @@ public class GameDataManager : MonoBehaviour
         playerStatsPath = Path.Combine(Application.persistentDataPath, "PlayerStats.json");
         enemyStatsPath = Path.Combine(Application.persistentDataPath, "EnemyStats.json");
 
+        LoadStats();
+    }
+
+    public void LoadAll()
+    {
         LoadStats();
     }
 
@@ -75,4 +84,20 @@ public class GameDataManager : MonoBehaviour
         File.WriteAllText(playerStatsPath, JsonUtility.ToJson(playerStats));
         File.WriteAllText(enemyStatsPath, JsonUtility.ToJson(enemyStats));
     }
+
+    // ���� �ð��� ���õ� �������� ����
+    public void UpdateGameTime(float InDeltaTime)
+    {
+        mCurrentGameTime += InDeltaTime;
+    }
+    public float GetGameTime()
+    {
+        return mCurrentGameTime;
+    }
+    public void ClearGameTime()
+    {
+		mCurrentGameTime = 0.0f;
+    }
+
+
 }

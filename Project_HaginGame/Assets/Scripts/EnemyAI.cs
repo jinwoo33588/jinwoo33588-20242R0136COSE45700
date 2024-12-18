@@ -65,7 +65,7 @@ public class EnemyAI : MonoBehaviour
         // 적 1과 적 2 구분 (이름 기반 또는 태그 활용)
         if (gameObject.name == "Enemy1")
         {
-            ChasePlayerWithPrediction();
+            ChasePlayerDirectly();
         }
         else if (gameObject.name == "Enemy2")
         {

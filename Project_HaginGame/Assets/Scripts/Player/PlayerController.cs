@@ -1,18 +1,23 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class PlayerController : UnitBase
 {
     [Header("Player Settings")]
+    public int Life = 3;
     public float dashSpeed = 12f;
     public float dashDuration = 0.3f;
     public float rotationSpeed = 10f; 
     private bool isDashing = false;
 
-    //private CharacterController controller;
-    //public Camera mainCamera;
+    public bool gameOver = false;
 
+
+    void Awake()
+    {
+        //Playerprefs.SetInt("MaxScore", 122230);
+    }
     protected override void Start()
     {
         base.Start();
@@ -24,17 +29,11 @@ public class PlayerController : UnitBase
         //walkSpeed = stats.speed;
         //runSpeed = stats.runSpeed;
         //currentSpeed = walkSpeed;
-        //controller = GetComponent<CharacterController>();
-        //animator = GetComponentInChildren<Animator>();
-        // Animator 컴포넌트를 자동으로 가져오기
-        //animator = GetComponent<Animator>();
+
         if (animator == null)
         {
             Debug.LogError("Animator 컴포넌트를 찾을 수 없습니다. Player 오브젝트에 Animator를 추가하세요.");
         }
-
-        //mainCamera = Camera.main;
-        
         
     }
 
@@ -69,26 +68,6 @@ public class PlayerController : UnitBase
 
             transform.position += movementDirection * currentSpeed * Time.deltaTime;
             transform.LookAt(transform.position + movementDirection);
-
-            /*
-            // 카메라 기준으로 이동 방향 계산
-            Vector3 cameraForward = mainCamera.transform.forward;
-            Vector3 cameraRight = mainCamera.transform.right;
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-
-            Vector3 moveDirection = (cameraForward * movementDirection.z + cameraRight * movementDirection.x).normalized;
-
-            // 플레이어 이동
-            transform.position += moveDirection * currentSpeed * Time.deltaTime;
-
-            // 부드러운 방향 회전
-            if (moveDirection != Vector3.zero)
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-            }
-            */
         }
         else
         {
@@ -119,12 +98,31 @@ public class PlayerController : UnitBase
         }
 
         isDashing = false;
-        stamina -= 20; // Dash 사용 시 스태미나 소모
+        stamina -= 20; // Dash 사용 시 스태미나 소모 // 쿨타임 추가하기
     }
+
+    // 현재 스태미나 반환
+    public float GetCurrentStamina()
+    {
+        return stamina;
+    }
+
+    // 최대 스태미나 반환
+    public float GetMaxStamina()
+    {
+        return maxStamina;
+    }
+
+    
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy")&& Life > 0 )
+        {
+            Life --;
+            InGameUIManager.Instance.RemoveHeart();
+        }
+        if(Life<=0)
         {
             Die();
         }
@@ -136,8 +134,5 @@ public class PlayerController : UnitBase
         // 게임 종료 처리 (예: 메인 메뉴로 이동)
         GameManager.Instance.GameOver();
     }
-
-    
-
 
 }

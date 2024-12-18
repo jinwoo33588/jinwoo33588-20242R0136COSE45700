@@ -7,6 +7,8 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
+    public GameObject player;
     private bool isGamePaused = false;
     private void Start()
     {
@@ -15,6 +17,7 @@ public class GameManager : MonoBehaviour
         {
             InGameUIManager.Instance.StartCountdown();
         }
+        GameDataManager.Instance.LoadAll();
     }
 
     private void Awake()
@@ -39,6 +42,7 @@ public class GameManager : MonoBehaviour
         GameDataManager.Instance.SaveStats();
         InGameUIManager.Instance.ShowGameOverUI();
         
+        
     }
 
 
@@ -50,11 +54,4 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // 게임 종료
-    public void QuitGame()
-    {
-        Debug.Log("Quitting Game...");
-        SceneManager.LoadScene("LobbyScene");
-    }
- 
 }

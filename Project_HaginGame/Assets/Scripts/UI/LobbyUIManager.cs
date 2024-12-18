@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class MainMenuUI : MonoBehaviour
+public class LobbyUIManager : MonoBehaviour
 {
     public GameObject MainMenuCanvas;
     // Start is called before the first frame update

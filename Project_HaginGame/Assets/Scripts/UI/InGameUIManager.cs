@@ -13,8 +13,30 @@ public class InGameUIManager : MonoBehaviour
     public GameObject gameOverUI;  // GameOver UI 연결
     public TMP_Text countdownText; // 카운트다운 UI 연결
     public GameObject pauseMenuCanvas; // Pause 메뉴 Canvas
- 
-    private PlayerController player;
+    
+    public GameObject GameUI;
+
+
+
+    [Header("Component")]
+    public PlayerController player;
+    public TMP_Text playTimeText;
+    public TMP_Text staminaText;
+    public RectTransform playerStaminaGroup;
+    public RectTransform playerStaminaBar;
+    public GameObject heartPrefab;        // 하트 프리팹
+    public Transform heartContainer;     // 하트가 배치될 부모 오브젝트
+    private Stack<GameObject> hearts = new Stack<GameObject>(); // 생성된 하트 리스트
+
+
+
+
+
+    public float playTime;
+    //int hour;
+    
+    
+    //private PlayerController player;
     private bool isGamePaused = false;
 
     private void Awake()
@@ -30,19 +52,32 @@ public class InGameUIManager : MonoBehaviour
     }
     private void Start()
     {
+        playTime = 0f;
         player = FindObjectOfType<PlayerController>();
         if (player == null)
         {
             Debug.LogError("PlayerController not found!");
         }
+       
 
         // UI 초기화
         if (pauseMenuCanvas != null) pauseMenuCanvas.SetActive(false);
         if (gameOverUI != null) gameOverUI.SetActive(false);
         if (countdownText != null) countdownText.gameObject.SetActive(false);
+
+        GameUI.gameObject.SetActive(true);
+        AddHeart();
+        Debug.Log("Life:" + player.Life);
     }
-    private void Update()
+    void Update()
     {
+        if(isGamePaused == false)
+        {
+            playTime += Time.deltaTime * 3600;
+        }
+
+        
+    
         // ESC 키로 Pause 토글
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -56,7 +91,37 @@ public class InGameUIManager : MonoBehaviour
             }
         }
     }
+    void LateUpdate() 
+    {
+        int hour = (int)(playTime / 3600);
+        int min = (int)((playTime - hour * 3600) / 60);
+        int sec = (int)(playTime % 60);
 
+        playTimeText.text = string.Format("{0:00}", hour) + ":"+string.Format("{0:00}", min) + ":"+string.Format("{0:00}", sec);
+
+        playerStaminaBar.localScale = new Vector3((float)player.stamina/player.maxStamina,1,1);
+        //UpdateHeartUI();
+    }
+
+    
+    // 하트 추가
+    private void AddHeart()
+    {
+        for (int i = 0; i < player.Life; i++)
+        {
+            GameObject heart = Instantiate(heartPrefab, heartContainer);
+            hearts.Push(heart); // 스택에 하트 추가
+        }
+    }
+     // 하트 UI 업데이트// 하트 제거 (오른쪽부터 제거)
+    public void RemoveHeart()
+    {
+        if (hearts.Count > 0)
+        {
+            GameObject heartToRemove = hearts.Pop(); // 스택에서 하트 제거
+            Destroy(heartToRemove);
+        }
+    }
 
      public void StartCountdown()
     {
@@ -111,8 +176,12 @@ public class InGameUIManager : MonoBehaviour
     }
      public void QuitToLobby()
     {
-        GameManager.Instance.QuitGame(); // GameManager 통해 로비 이동
+        Debug.Log("Quitting Game...");
+        SceneManager.LoadScene("LobbyScene");
     }
 
-   
+    public void GameUIControl()
+    {
+
+    }
 }
