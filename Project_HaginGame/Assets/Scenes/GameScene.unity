@@ -589,7 +589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1931386443}
-  speed: 8
+  speed: 10
   predictionDistance: 20
   minSeparationDistance: 10
   boundaryX: {x: -50, y: 50}
@@ -4328,8 +4328,8 @@ MonoBehaviour:
   maxStamina: 100
   staminaRecoveryRate: 1
   staminaDecreaseRate: 10
-  walkSpeed: 12
-  runSpeed: 18
+  walkSpeed: 15
+  runSpeed: 23
   Life: 3
   dashSpeed: 40
   dashDuration: 0.2
