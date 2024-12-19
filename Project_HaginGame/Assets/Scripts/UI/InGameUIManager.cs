@@ -28,15 +28,9 @@ public class InGameUIManager : MonoBehaviour
     public Transform heartContainer;     // 하트가 배치될 부모 오브젝트
     private Stack<GameObject> hearts = new Stack<GameObject>(); // 생성된 하트 리스트
 
-
-
-
-
     public float playTime;
     //int hour;
     
-    
-    //private PlayerController player;
     private bool isGamePaused = false;
 
     private void Awake()
@@ -103,7 +97,6 @@ public class InGameUIManager : MonoBehaviour
         //UpdateHeartUI();
     }
 
-    
     // 하트 추가
     private void AddHeart()
     {
@@ -180,8 +173,4 @@ public class InGameUIManager : MonoBehaviour
         SceneManager.LoadScene("LobbyScene");
     }
 
-    public void GameUIControl()
-    {
-
-    }
 }
